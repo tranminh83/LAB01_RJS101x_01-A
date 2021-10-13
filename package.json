@@ -20,5 +20,9 @@
   "homepage": "https://github.com/tranminh83/LAB01_RJS101x_01-A#readme",
   "devDependencies": {
     "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "create-react-app": "^1.5.2",
+    "tar": "^6.1.11"
   }
 }
