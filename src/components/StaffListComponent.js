@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Card, CardImg, Button, FormGroup, Input, CardTitle, Label, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class Menu extends Component {
@@ -11,41 +11,6 @@ class Menu extends Component {
             selectedStaff: null
         }
     }
-
-    // onStaffSelect(staff) {
-
-    //     this.setState({ selectedStaff: staff });
-    // }
-
-
-    // renderStaff(staff) {
-    //     if (staff != null) {
-    //         return (
-    //             <>
-    //                 <div className="col-lg-2 col-md-4 col-sm-6">
-    //                     <Card >
-    //                         <Link to={`/staff/${staff.id}`}>
-    //                             <CardImg width="100%" src={staff.image} alt={staff.name} />
-    //                             <CardBody>
-    //                                 <CardTitle>{staff.name}</CardTitle>
-    //                                 <CardText>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</CardText>
-    //                                 <CardText>Ngày bắt đầu làm việc: {dateFormat(staff.startDate, "dd/mm/yyyy")}</CardText>
-    //                                 <CardText>Phòng ban: {staff.department.name}</CardText>
-    //                                 <CardText>Chức danh: {staff.role}</CardText>
-    //                                 <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
-    //                                 <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
-    //                             </CardBody>
-    //                         </Link>
-    //                     </Card>
-    //                 </div>
-    //             </>
-    //         );
-    //     } else {
-    //         return (
-    //             <div></div>
-    //         );
-    //     }
-    // }
 
     render() {
         const menu = this.props.staffs.map((staff) => {
@@ -64,7 +29,16 @@ class Menu extends Component {
         return (
             <div className="container">
                 <div className="row">
+                    <FormGroup row className="mt-3">
+                        <Col md={3}>
+                            <Button type="submit" color="primary">Search</Button>
+                            <Input type="text" id="firstName" name="firstName"
+                                placeholder="First Name"
+                                value={this.state.firstname}
+                                onChange={this.handleInputChange} />
 
+                        </Col>
+                    </FormGroup>
                     <div className="col-12">
                         <h3>Staff</h3>
                         <hr />

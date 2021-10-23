@@ -51,7 +51,8 @@ class App extends Component {
             <Route exact path="/staff/:staffid" component={DetailStaff}/>
             <Route path="/salary"><Income staffs={this.state.staffs} /></Route>
             <Route path="/department"><Department departments={this.state.departments} /></Route>
-            <Redirect to='/home' />
+            <Route path="/contactus" component={() => <Contact />} />
+            <Redirect to='/staff' />
           </Switch>
           <Footer />
         </div>
