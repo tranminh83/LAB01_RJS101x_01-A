@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function DepartmentCoponent(props) {
+export default function DepartmentComponent(props) {
     const dep = props.departments.map((dep) => {
         return (
             <div className="card rounded col-sm-12 col-md-4 col-lg-3 m-3">

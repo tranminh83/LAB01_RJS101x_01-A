@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardImg, Button, FormGroup, Input, CardTitle, Label, Col } from 'reactstrap';
+import { Card, CardImg, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Search from './SearchComponent';
 
 class Menu extends Component {
 
@@ -8,12 +9,20 @@ class Menu extends Component {
         super(props);
 
         this.state = {
-            selectedStaff: null
+            selectedStaff: null,
+            inputValue: '',
+            staffs: props.staffs
         }
     }
 
+    searchHandle = (keyWord) => {
+        const tim = this.props.staffs.filter(item => item.name.toLowerCase().indexOf(keyWord.toLowerCase()) !== -1
+        );
+        this.setState({ inputValue: keyWord, staffs: tim });
+    }
+
     render() {
-        const menu = this.props.staffs.map((staff) => {
+        const menu = this.state.staffs.map((staff) => {
             return (
                 <div key={staff.id} className="col-lg-2 col-md-4 col-sm-6">
                     <Link to={`/staff/${staff.id}`}>
@@ -29,20 +38,13 @@ class Menu extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <FormGroup row className="mt-3">
-                        <Col md={3}>
-                            <Button type="submit" color="primary">Search</Button>
-                            <Input type="text" id="firstName" name="firstName"
-                                placeholder="First Name"
-                                value={this.state.firstname}
-                                onChange={this.handleInputChange} />
-
-                        </Col>
-                    </FormGroup>
-                    <div className="col-12">
+                    <div>
                         <h3>Staff</h3>
-                        <hr />
                     </div>
+                    <div className="float-end">
+                        <Search keyWord={(keyWord) => this.searchHandle(keyWord)} />
+                    </div>
+                    <hr />
                 </div>
                 <div className="row">
                     {menu}
@@ -50,7 +52,6 @@ class Menu extends Component {
             </div>
         );
     }
-
 }
 
 export default Menu;
