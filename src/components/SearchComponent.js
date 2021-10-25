@@ -15,24 +15,18 @@ class Search extends Component {
         })
     }
 
-
     render() {
         return (
-            <Row className="container mb-3">
-                <div className="col-3 row">
-                    <Input className="text-center" type="text" placeholder="Employee Name"
-                        onChange={this.hangdleChange} value={this.state.value} />
-                </div>
-                <div className="col-2">
-                    <Button type="reset" className="bg-primary" value="reset"
-                        onClick={() => this.props.keyWord(this.state.value)}>
-                        Find
-                    </Button>
-                </div>
-            </Row>
+            <div className="col-6 d-flex">
+                <Input className="text-center" type="text" placeholder="Employee Name"
+                    onChange={this.hangdleChange} value={this.state.value} />
+                <Button type="reset" className="bg-primary" value="reset"
+                    onClick={() => this.props.keyWord(this.state.value)}>
+                    Find
+                </Button>
+            </div>
         );
     }
 }
 
 export default Search;
-//trinhf duye

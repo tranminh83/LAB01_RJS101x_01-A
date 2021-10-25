@@ -37,14 +37,9 @@ class Menu extends Component {
 
         return (
             <div className="container">
-                <div className="row">
-                    <div>
-                        <h3>Staff</h3>
-                    </div>
-                    <div className="float-end">
-                        <Search keyWord={(keyWord) => this.searchHandle(keyWord)} />
-                    </div>
-                    <hr />
+                <div className="row my-3">
+                    <h3 className="col-6">Staff</h3>
+                    <Search keyWord={(keyWord) => this.searchHandle(keyWord)} />
                 </div>
                 <div className="row">
                     {menu}
