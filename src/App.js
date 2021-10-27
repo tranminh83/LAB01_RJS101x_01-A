@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Home from './components/HomeComponent';
 import Menu from './components/StaffListComponent';
 import Contact from './components/ContactComponent';
 import Header from './components/HeaderComponent';
@@ -23,20 +22,25 @@ class App extends Component {
       departments: DEPARTMENTS,
       role: ROLE
     };
+    this.addStaff = this.addStaff.bind(this);
+  }
+
+  addStaff(staff) {
+      this.setState({staffs: [...this.state.staffs, ...[{...staff, ...{id: this.state.staffs.length}}]]});
   }
 
   render() {
-    console.log('aa', this.state.staffs)
 
-    const HomePage = () => {
-      return (
-        <Menu staffs={this.state.staffs} />
-      );
-    }
+    // const HomePage = () => {
+    //   return (
+    //     <Menu staffs={this.state.staffs} />
+    //   );
+    // }
 
     const DetailStaff = ({match}) => {
       const idStaff = +match.params.staffid
       const staff = this.state.staffs.filter((staff) => staff.id === idStaff)[0]
+      console.log('staff', staff)
       return (
         <StaffDetail staff={staff} />
       )
@@ -47,7 +51,7 @@ class App extends Component {
         <div className="App">
           <Header />
           <Switch>
-            <Route exact path="/staff" component={() => <Menu staffs={this.state.staffs} />} />
+            <Route exact path="/staff" component={() => <Menu staffs={this.state.staffs} addStaff={this.addStaff}/>} />
             <Route exact path="/staff/:staffid" component={DetailStaff}/>
             <Route path="/salary"><Income staffs={this.state.staffs} /></Route>
             <Route path="/department"><Department departments={this.state.departments} /></Route>

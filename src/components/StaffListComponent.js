@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardTitle, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Search from './SearchComponent';
+import AddStaff from './AddStaffComponent';
 
 class Menu extends Component {
 
@@ -11,7 +12,8 @@ class Menu extends Component {
         this.state = {
             selectedStaff: null,
             inputValue: '',
-            staffs: props.staffs
+            staffs: props.staffs,
+            isShow: false
         }
     }
 
@@ -19,6 +21,10 @@ class Menu extends Component {
         const tim = this.props.staffs.filter(item => item.name.toLowerCase().indexOf(keyWord.toLowerCase()) !== -1
         );
         this.setState({ inputValue: keyWord, staffs: tim });
+    }
+
+    toggleModal = () => {
+        this.setState({ isShow: true })
     }
 
     render() {
@@ -38,8 +44,13 @@ class Menu extends Component {
         return (
             <div className="container">
                 <div className="row my-3">
-                    <h3 className="col-6">Staff</h3>
-                    <Search keyWord={(keyWord) => this.searchHandle(keyWord)} />
+                    <h3 className="col-1">Staff</h3>
+                    <div className="col-4">
+                        <AddStaff open={this.state.isShow} addStaff={this.props.addStaff} />
+                    </div>
+                    <div className="col-7 d-flex">
+                        <Search keyWord={(keyWord) => this.searchHandle(keyWord)} />
+                    </div>
                 </div>
                 <div className="row">
                     {menu}
