@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 import {DEPARTMENTS} from '../shared/staffs'
+import { Control, LocalForm, Errors } from 'react-redux-form';
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => (val) && (val.length >= len);
+const isNumber = (val) => !NaN(Number());
+
 
 class AddStaff extends Component {
 
@@ -18,17 +25,10 @@ class AddStaff extends Component {
             salaryScale: 1,
             annualLeave: 0,
             overTime: 0,
-            touched: {
-                fullName: false,
-                salaryscale: false,
-                annualleave: false,
-                overtime: false
-            }
         }
         this.toggleModal = this.toggleModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
     }
 
     toggleModal() {
@@ -49,7 +49,7 @@ class AddStaff extends Component {
 
     handleSubmit(event) {
         this.toggleModal();
-        event.preventDefault();
+        // event.preventDefault();
 
         const department = DEPARTMENTS.find(department => department.id === this.state.department);
         const newStaff = {
@@ -67,52 +67,8 @@ class AddStaff extends Component {
         this.props.addStaff(newStaff)
     }
 
-    handleBlur = (field) => (evt) => {
-        this.setState({
-            touched: { ...this.state.touched, [field]: true }
-        });
-    }
-
-    validate(fullName, salaryScale, annualLeave, overTime) {
-        // const errors = {
-        //     fullName: '',
-        //     salaryScale: '',
-        //     annualLeave: '',
-        //     overTime: ''
-        // };
-
-        // if (this.state.touched.fullName && fullName.length < 5)
-        //     errors.fullName = 'Vui lòng nhập đủ họ tên tối thiểu 5 ký tự';
-        // else if (this.state.touched.fullName && fullName.length > 30)
-        //     errors.fullName = 'Tên của bạn không dài quá 30 ký tự';
-
-        // if (this.state.touched.salaryScale && salaryScale.length < 3)
-        //     errors.salaryScale = 'Last Name should be >= 3 characters';
-        // else if (this.state.touched.salaryScale && salaryScale.length > 10)
-        //     errors.salaryScale = 'Last Name should be <= 10 characters';
-
-        // if (this.state.touched.annualLeave && annualLeave.length < 3)
-        //     errors.annualLeave = 'Last Name should be >= 3 characters';
-        // else if (this.state.touched.annualLeave && annualLeave.length > 10)
-        //     errors.annualLeave = 'Last Name should be <= 10 characters';
-
-        // if (this.state.touched.overTime && overTime.length < 3)
-        //     errors.overTime = 'Last Name should be >= 3 characters';
-        // else if (this.state.touched.overTime && overTime.length > 10)
-        //     errors.overTime = 'Last Name should be <= 10 characters';
-
-        // return errors;
-    }
 
     render() {
-        // const errors = this.validate(
-        //     this.state.fullName,
-        //     this.state.doB,
-        //     this.state.startDate,
-        //     this.state.salaryScale,
-        //     this.state.annualLeave,
-        //     this.state.overTime
-        // );
         return (
             <>
                 <FormGroup row>
@@ -123,44 +79,56 @@ class AddStaff extends Component {
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>AddStaff</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup row className="mt-3">
+                        <LocalForm onSubmit={this.handleSubmit}>
+                            <Row className="form-group mt-3">
                                 <Label htmlFor="fullName" md={2}>Full Name</Label>
                                 <Col md={10}>
-                                    <Input type="text" id="fullName" name="fullName"
+                                    <Control.text model=".fullName" id="fullName" name="fullName"
                                         placeholder="Full Name"
+                                        className="form-control"
+                                        validators={{
+                                            required, 
+                                            minLength: minLength(3), 
+                                            maxLength: maxLength(30)
+                                        }}
                                         value={this.state.fullName}
-                                        // valid={errors.fullName === ''}
-                                        // invalid={errors.fullName !== ''}
-                                        onBlur={this.handleBlur('fullName')}
                                         onChange={this.handleInputChange} />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".fullName"
+                                            show="touched"
+                                            messages={{
+                                                required: 'required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 30 characters or less'
+                                            }}
+                                        />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
+                            </Row>
+                            <Row className="form-group mt-3">
                                 <Label htmlFor="doB" md={2}>Date of Birth</Label>
                                 <Col md={10}>
                                     <Input type="date" id="doB" name="doB"
                                         placeholder="BirthDay"
                                         value={this.state.doB}
-                                        onBlur={this.handleBlur('doB')}
                                         onChange={this.handleInputChange} />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
+                            </Row>
+                            <Row className="form-group mt-3">
                                 <Label htmlFor="startDate" md={2}>Starting Date</Label>
                                 <Col md={10}>
                                     <Input type="date" id="startDate" name="startDate"
                                         placeholder="Starting Date"
                                         value={this.state.startDate}
-                                        onBlur={this.handleBlur('startDate')}
                                         onChange={this.handleInputChange} />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
+                            </Row>
+                            <Row className="form-group mt-3">
                                 <Label htmlFor="department" md={2}>Deparment</Label>
                                 <Col md={10}>
-                                    <Input type="select" id="department" name="department"
+                                    <Control.select model=".department" id="department" name="department"
                                         placeholder="Department"
+                                        className="form-control"
                                         value={this.state.department}
                                         onChange={this.handleInputChange}>
                                         <option value="Dept01">Sale</option>
@@ -168,46 +136,46 @@ class AddStaff extends Component {
                                         <option value="Dept03">Marketing</option>
                                         <option value="Dept04">IT</option>
                                         <option value="Dept05">Finance</option>
-                                    </Input>
+                                    </Control.select>
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
+                            </Row>
+                            <Row className="form-group mt-3">
                                 <Label htmlFor="salaryScale" md={2}>Salary Scale</Label>
                                 <Col md={10}>
-                                    <Input type="number" id="salaryScale" name="salaryScale"
+                                    <Control.text model=".salaryScale" id="salaryScale" name="salaryScale"
                                         placeholder="1.0->3.0"
+                                        className="form-control"
                                         value={this.state.salaryScale}
-                                        onBlur={this.handleBlur('salaryScale')}
                                         onChange={this.handleInputChange} 
                                         />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
-                                <Label htmlFor="annualleave" md={2}>Annualleave</Label>
+                            </Row>
+                            <Row className="form-group mt-3">
+                                <Label htmlFor="annualLeave" md={2}>Annualleave</Label>
                                 <Col md={10}>
-                                    <Input type="number" id="annualLeave" name="annualLeave"
+                                    <Control.text model=".annualLeave" id="annualLeave" name="annualLeave"
                                         placeholder="1.0"
+                                        className="form-control"
                                         value={this.state.annualLeave}
-                                        onBlur={this.handleBlur('annualLeave')}
                                         onChange={this.handleInputChange} />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
+                            </Row>
+                            <Row className="form-group mt-3">
                                 <Label htmlFor="overTime" md={2}>Over Time</Label>
                                 <Col md={10}>
-                                    <Input type="number" id="overTime" name="overTime"
+                                    <Control.text model=".overTime" id="overTime" name="overTime"
                                         placeholder="1.0"
+                                        className="form-control"
                                         value={this.state.overTime}
-                                        onBlur={this.handleBlur('overTime')}
                                         onChange={this.handleInputChange} />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row className="mt-3">
+                            </Row>
+                            <Row className="form-group mt-3">
                                 <Col md={{ size: 10, offset: 2 }}>
                                     <Button type="submit" color="primary">Add</Button>
                                 </Col>
-                            </FormGroup>
-                        </Form>
+                            </Row>
+                        </LocalForm>
                     </ModalBody>
                 </Modal>
             </>
