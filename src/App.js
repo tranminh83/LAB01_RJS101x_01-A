@@ -8,9 +8,7 @@ import StaffDetail from './components/StaffDetailComponent';
 import Income from './components/IncomeComponent';
 import Department from './components/DepartmentComponent';
 import './App.css';
-import { STAFFS } from './shared/staffs';
-import { DEPARTMENTS } from './shared/staffs';
-import { ROLE } from './shared/staffs';
+import {STAFFS, DEPARTMENTS, ROLE} from './shared/staffs'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 class App extends Component {
